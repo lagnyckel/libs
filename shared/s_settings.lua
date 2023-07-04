@@ -19,3 +19,7 @@ Settings = {
         characterId = 'id',
     },
 }
+
+exports('getSettings', function()
+    return Settings 
+end)
