@@ -1,5 +1,5 @@
 Settings = {
-    Framework = 'ESX', -- ESX, Revoked, Standalone; 
+    Framework = 'ESX', -- ESX, Revoked, Standalone
 
     -- Standalone Settings
     Standalone = {
