@@ -1,14 +1,11 @@
 Main = {}; 
 
-local framework = Settings.Framework;
+ESX = nil 
 
-if framework == 'ESX' then 
-    ESX = nil 
+TriggerEvent('esx:getSharedObject', function(obj) 
+    ESX = obj  
+end) 
 
-    TriggerEvent('esx:getSharedObject', function(obj) 
-        Main.ESX = obj  
-    end) 
-end
 
 function getCharacters()
     local sqlQuery = ('SELECT * FROM %s'):format(Settings[Settings.Framework].characterTable); 
@@ -24,7 +21,7 @@ end
 
 function getSpecificCharacter(identifier)
     local sqlQuery = ('SELECT * FROM %s WHERE %s = @identifier'):format(Settings[Settings.Framework].characterTable, Settings[Settings.Framework].characterId); 
-    
+
     local result = MySQL.Sync.fetchAll(sqlQuery, {
         ['@identifier'] = identifier
     });
@@ -45,7 +42,7 @@ function getPlayerJob(source)
     local player = {}
 
     if framework == 'ESX' or 'Revoked' then 
-        player = Main.ESX.GetPlayerFromId(source); 
+        player = ESX.GetPlayerFromId(source); 
     else
         local sqlQuery = ('SELECT * FROM %s WHERE %s = @identifier'):format(Settings[Settings.Framework].characterTable, Settings[Settings.Framework].characterId);
 
@@ -63,11 +60,3 @@ function getPlayerJob(source)
 
     return player.job;
 end
-
-exports('getCharacters', function()
-    return Libs:getCharacters();
-end)
-
-exports('getSpecificCharacter', function(identifier)
-    return Libs:getSpecificCharacter(identifier);
-end)

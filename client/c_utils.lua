@@ -104,6 +104,12 @@ function Utilites:DrawMissionText(msg, time)
 	EndTextCommandPrint(time, true)
 end
 
+function Utilites:Notify(text)
+    SetNotificationTextEntry('STRING')
+    AddTextComponentSubstringPlayerName(text)
+    DrawNotification(false, false)
+end
+
 function Utilites:DrawScriptMarker(markerData)
     DrawMarker(markerData["type"] or 1, markerData["pos"] or vector3(0.0, 0.0, 0.0), 0.0, 0.0, 0.0, (markerData["type"] == 6 and -90.0 or markerData["rotate"] and -180.0) or 0.0, 0.0, 0.0, markerData["sizeX"] or 1.0, markerData["sizeY"] or 1.0, markerData["sizeZ"] or 1.0, markerData["r"] or 1.0, markerData["g"] or 1.0, markerData["b"] or 1.0, 100, false, true, 2, false, false, false, false)
 end  
