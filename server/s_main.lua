@@ -19,14 +19,24 @@ function getCharacters()
     return result;
 end
 
-function getSpecificCharacter(identifier)
+function getSpecificCharacter(source)
+    local identifier = {}; 
+
+    if Settings.Framework == 'ESX' or 'Revoked' then 
+        local player = ESX.GetPlayerFromId(source); 
+
+        identifier = Settings.Framework == 'ESX' and player.identifier or player.character.id; 
+    end
+
+    print(Settings[Settings.Framework].characterTable)
+
     local sqlQuery = ('SELECT * FROM %s WHERE %s = @identifier'):format(Settings[Settings.Framework].characterTable, Settings[Settings.Framework].characterId); 
 
     local result = MySQL.Sync.fetchAll(sqlQuery, {
         ['@identifier'] = identifier
     });
 
-    if not results then 
+    if not result then 
         print(('^1[ERROR]^7 %s'):format(sqlQuery));
         return; 
     end
@@ -59,4 +69,24 @@ function getPlayerJob(source)
     if not player then return end;
 
     return player.job;
+end
+
+function hasMoney(amount)
+    local player = ESX.GetPlayerFromId(source);
+
+    if not player then return end;
+
+    if player.getMoney() >= amount then 
+        player.removeMoney(amount)
+
+        return true; 
+    end
+
+    return false; 
+end
+
+function formatDate(date)
+    local year, month, day = date:match('(%d+)-(%d+)-(%d+)');
+
+    return day .. '/' .. month .. '/' .. year;
 end
